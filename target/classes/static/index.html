@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List Application</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .api-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .api-section h2 {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .endpoint {
+            background: white;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        .endpoint-method {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .endpoint-url {
+            color: #333;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        .test-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        .test-button:hover {
+            background: #5568d3;
+        }
+
+        .response {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 4px;
+            display: none;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        .response.show {
+            display: block;
+        }
+
+        .response.error {
+            background: #ffebee;
+            border-left-color: #f44336;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #999;
+            font-size: 12px;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #4caf50;
+            margin-right: 5px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Todo List Application</h1>
+        <p class="subtitle"><span class="status-indicator"></span>Spring Boot REST API</p>
+
+        <div class="api-section">
+            <h2>Available Endpoints</h2>
+
+            <div class="endpoint">
+                <div>
+                    <span class="endpoint-method">GET</span>
+                    <span class="endpoint-url">/todo-list/hello</span>
+                </div>
+                <button class="test-button" onclick="testHelloEndpoint()">Test Endpoint</button>
+                <div id="helloResponse" class="response"></div>
+            </div>
+        </div>
+
+        <div class="api-section">
+            <h2>Quick Info</h2>
+            <p style="color: #666; line-height: 1.6;">
+                <strong>Base URL:</strong> <code>http://localhost:8080/todo-list</code><br>
+                <strong>Framework:</strong> Spring Boot 3.5.7<br>
+                <strong>Java Version:</strong> 21<br>
+                <strong>Status:</strong> <span style="color: #4caf50;">✓ Running</span>
+            </p>
+        </div>
+
+        <div class="footer">
+            Built with Spring Boot • Navdeep's Todo List Project
+        </div>
+    </div>
+
+    <script>
+        async function testHelloEndpoint() {
+            const responseDiv = document.getElementById('helloResponse');
+            responseDiv.textContent = 'Loading...';
+            responseDiv.className = 'response show';
+
+            try {
+                const response = await fetch('/todo-list/hello');
+                const data = await response.text();
+
+                if (response.ok) {
+                    responseDiv.textContent = `✓ Success (${response.status})\n\nResponse: "${data}"`;
+                    responseDiv.className = 'response show';
+                } else {
+                    responseDiv.textContent = `✗ Error (${response.status})\n\n${data}`;
+                    responseDiv.className = 'response show error';
+                }
+            } catch (error) {
+                responseDiv.textContent = `✗ Network Error\n\n${error.message}`;
+                responseDiv.className = 'response show error';
+            }
+        }
+    </script>
+</body>
+</html>
+
