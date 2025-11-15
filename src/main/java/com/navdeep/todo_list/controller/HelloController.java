@@ -1,0 +1,22 @@
+package com.navdeep.todo_list.controller;
+
+import com.navdeep.todo_list.service.HelloService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/todo-list")
+public class HelloController {
+
+    private final HelloService helloService;
+
+    public HelloController(HelloService helloService) {
+        this.helloService = helloService;
+    }
+
+    @GetMapping("/hello")
+    public String hello() {
+        return helloService.getMessage();
+    }
+}
